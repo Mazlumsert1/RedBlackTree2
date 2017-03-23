@@ -24,7 +24,7 @@ public class Tree<Key, Value> implements InterfaceMap<Key, Value> {
         if(key == null) throw new NullPointerException();
         return redBlackTree.get(key);
     }
-//aklsjd
+
     @Override
     public int size() {
         return redBlackTree.getSize();
