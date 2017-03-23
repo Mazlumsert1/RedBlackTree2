@@ -20,8 +20,9 @@ public class Tree<Key, Value> implements InterfaceMap<Key, Value> {
     }
 
     @Override
-    public Value get(Key k) {
-        return redBlackTree.get(k);
+    public Value get(Key key) {
+        if(key == null) throw new NullPointerException();
+        return redBlackTree.get(key);
     }
 //aklsjd
     @Override
