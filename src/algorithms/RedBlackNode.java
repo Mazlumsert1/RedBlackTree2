@@ -10,14 +10,15 @@ package algorithms;
  *
  * @author Tobias
  */
-public class RedBlackNode<E>
+public class RedBlackNode<K,V>
 {
-    private E data;
-    private RedBlackNode<E> left;
-    private RedBlackNode<E> right;
+    private K data;
+    private V value;
+    private RedBlackNode<K,V> left;
+    private RedBlackNode<K,V> right;
     private boolean isRed;
 
-    public RedBlackNode(E data)
+    public RedBlackNode(K data, V value)
     {
         this.data = data;
         this.left = null;
@@ -25,17 +26,30 @@ public class RedBlackNode<E>
         this.isRed = true;
     }
 
-    public E getData()
+    public K getData()
     {
         return data;
     }
 
-    public void setData(E data)
+
+
+    public void setData(K data)
     {
         this.data = data;
     }
 
-    public RedBlackNode<E> getLeft()
+    public void setValue(V value)
+    {
+        this.value = value;
+    }
+
+    public V getValue()
+    {
+        return value;
+    }
+
+
+    public RedBlackNode<K,V> getLeft()
     {
         return left;
     }
@@ -45,7 +59,7 @@ public class RedBlackNode<E>
         this.left = left;
     }
 
-    public RedBlackNode<E> getRight()
+    public RedBlackNode<K,V> getRight()
     {
         return right;
     }

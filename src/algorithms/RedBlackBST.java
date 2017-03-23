@@ -2,95 +2,117 @@ package algorithms;
 
 import java.util.Comparator;
 
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
+
 
 /**
  *
  * @author Tobias
  */
-public class RedBlackBST<E>
+public class RedBlackBST<K,V>
 {
-    private RedBlackNode<E> root;
-    private Comparator<E> comp;
+    private RedBlackNode<K,V> rootNode;
+    private Comparator<K> comparator;
 
-    public RedBlackBST(Comparator<E> comp)
+    int length = 0;
+
+    public RedBlackBST(Comparator<K> comp)
     {
-        this.root = null;
-        this.comp = comp;
+        this.rootNode = null;
+        this.comparator = comp;
     }
-    
-    public void insert(E data)
-    {
-        if(data == null) throw new NullPointerException("data should not be null");
-        this.root = insert(data, root);
-        this.root.setIsRed(false);
+
+    public int getSize() {
+        return length;
     }
-    
-    private RedBlackNode<E> insert(E data, RedBlackNode<E> h)
+
+    public void insert(K data, V value)
     {
-        if(h == null) return new RedBlackNode<>(data);
-        int c = comp.compare(data, h.getData());
+        if(data == null) throw new NullPointerException("NULL");
+        this.rootNode = insert(data, value, rootNode);
+        this.rootNode.setIsRed(false);
+    }
+
+    public V get(K key) {
+        RedBlackNode<K,V> x = rootNode;
+        while (x != null) {
+            int cmp = comparator.compare(key, x.getData());
+            if (cmp < 0) {
+                x = x.getLeft();
+            } else if (cmp > 0) {
+                x = x.getRight();
+            } else {
+                return x.getValue();
+            }
+        }
+        return null;
+    }
+
+    private RedBlackNode<K,V> insert(K data, V value, RedBlackNode<K,V> h)
+    {
+        if(h == null) {
+            length++;
+            return new RedBlackNode<>(data,value);
+        }
+        int c = comparator.compare(data, h.getData());
         if(c < 0)
         {
-            h.setLeft(insert(data, h.getLeft()));
+            h.setLeft(insert(data, value, h.getLeft()));
         }
         else if(c > 0)
         {
-            h.setRight(insert(data, h.getRight()));
+            h.setRight(insert(data, value, h.getRight()));
         }
         else
         {
             h.setData(data);
+            h.setValue(value);
+            length++;
         }
-        //Now for the rotating
+
         if(isRed(h.getRight()) && !isRed(h.getLeft()))
         {
             h = rotateLeft(h);
         }
-        
+
         if(isRed(h.getLeft()) && isRed(h.getLeft().getLeft()))
         {
             h = rotateRight(h);
         }
-        
+
         if(isRed(h.getLeft()) && isRed(h.getRight()))
         {
             flipColors(h);
         }
         return h;
     }
-    
-    private boolean isRed(RedBlackNode<E> node)
+
+    private boolean isRed(RedBlackNode<K,V> node)
     {
         if(node == null) return false;
         return node.isRed();
     }
-    
-    private RedBlackNode<E> rotateLeft(RedBlackNode<E> h)
+
+    private RedBlackNode<K,V> rotateLeft(RedBlackNode<K,V> h)
     {
-        RedBlackNode<E> tmp = h.getRight();
+        RedBlackNode<K,V> tmp = h.getRight();
         h.setRight(tmp.getLeft());
         tmp.setLeft(h);
         tmp.setIsRed(h.isRed());
         h.setIsRed(true);
         return tmp;
     }
-    
-    private RedBlackNode<E> rotateRight(RedBlackNode<E> h)
+
+    private RedBlackNode<K,V> rotateRight(RedBlackNode<K,V> h)
     {
-        RedBlackNode<E> tmp = h.getLeft();
+        RedBlackNode<K,V> tmp = h.getLeft();
         h.setLeft(tmp.getRight());
         tmp.setRight(h);
         tmp.setIsRed(h.isRed());
         h.setIsRed(true);
         return tmp;
     }
-    
-    private void flipColors(RedBlackNode<E> h)
+
+    private void flipColors(RedBlackNode<K,V> h)
     {
         h.getLeft().setIsRed(false);
         h.getRight().setIsRed(false);
