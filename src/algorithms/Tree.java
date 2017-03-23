@@ -23,7 +23,7 @@ public class Tree<Key, Value> implements InterfaceMap<Key, Value> {
     public Value get(Key k) {
         return redBlackTree.get(k);
     }
-
+//aklsjd
     @Override
     public int size() {
         return redBlackTree.getSize();
